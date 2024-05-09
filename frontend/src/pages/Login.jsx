@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 
 
+
 function Login() {
 
     const [username, setUsername] = useState('')
@@ -11,6 +12,7 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault()
         
+
         const user = {username, password}
 
         try{
@@ -26,10 +28,10 @@ function Login() {
 
             if(response.ok){
                 localStorage.setItem('accessToken', json.token);
-                console.log('login succesful')
-                window.location.href = '/AdminPage'
-                
+                window.location.href="AdminPage"
+                    
             }
+
             else{
                 console.log(json.error)
             }
