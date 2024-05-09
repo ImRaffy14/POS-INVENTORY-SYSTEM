@@ -51,24 +51,32 @@ const createUser = async (req, res) => {
 
 //POST LOGIN
 
+    let user
+
     const loginUser = async (req, res) => {
         const { username, password } = req.body;
 
         try {
-            const user = await User.findOne({ username });
+             user = await User.findOne({ username });
 
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 return res.status(401).json({ error: 'Invalid credentials' });
             }
 
             const token = jwt.sign({ userId: User._id }, 'secret_key', { expiresIn: '1h' });
-            res.status(200).json({token, user});
+            res.status(200).json({token});
 
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
     };
 
+
+//GET STAFF ONLINE
+
+    const staffOnline = async (req, res) => {
+        res.status(200).json({user})
+    }
 
 
 //DELETE
@@ -115,5 +123,6 @@ module.exports = {
     createUser,
     deleteUser,
     updateUser,
-    loginUser
+    loginUser,
+    staffOnline
 }
