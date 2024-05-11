@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import StaffsData from '../components/StaffsData';
 import { toast } from 'react-toastify';
+import Dashboard from '../components/Dashboard';
 import { UseOnlineStaffContext } from '../hooks/useStaffOnline';
+
 
 function AdminPage() {
 
     const {staffOnline, dispatch} = UseOnlineStaffContext()
-    
-
     const [isToggled, setIsToggled] = useState(true);
 
     const handleSideNav = () => {
@@ -17,21 +17,27 @@ function AdminPage() {
 
     const handleLogout = () => {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('UiD_01');
         window.location.href = "/";
     };
 
 
+
     //GET STAFF ONLINE DETAILS
+
+    const UiD = localStorage.getItem('UiD_01');
     
     useEffect(() => {
         const getStaffOnline = async () => {
-            const response = await fetch('http://localhost:3000/api/staffOnline')
+            const response = await fetch('http://localhost:3000/api/staffOnline/' + UiD)
+
             const json = await response.json()
 
             if(response.ok){
                 dispatch({type: 'GET_STAFF', payload: json})
             }
-            
+
+   
         }
 
         getStaffOnline()
@@ -147,7 +153,7 @@ function AdminPage() {
                                         </div>
                                     </div>
                                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                                        <h1 className="ml-3 mb-1">{staffOnline && staffOnline.user.username}<span className="badge text-teal-500 ml-2">online</span></h1>
+                                        <h1 className="ml-3 mb-1">{staffOnline && staffOnline.username}<span className="badge text-teal-500 ml-2">online</span></h1>
                                         <li><a>Settings</a></li>
                                         <li onClick={handleLogout}><a>Logout</a></li>
                                     </ul>
@@ -156,6 +162,7 @@ function AdminPage() {
                         </div>
                         {/* DATA */}
                         <Routes>
+                            <Route path="" element={<Dashboard/>}/>
                             <Route path='Staffs' element={<StaffsData />} />
                         </Routes>
                     </div>

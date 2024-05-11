@@ -51,20 +51,18 @@ const createUser = async (req, res) => {
 
 //POST LOGIN
 
-    let user
-
     const loginUser = async (req, res) => {
         const { username, password } = req.body;
 
         try {
-             user = await User.findOne({ username });
+            const user = await User.findOne({ username });
 
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 return res.status(401).json({ error: 'Invalid credentials' });
             }
 
             const token = jwt.sign({ userId: User._id }, 'secret_key', { expiresIn: '1h' });
-            res.status(200).json({token});
+            res.status(200).json({token, user});
 
         } catch (error) {
             res.status(400).json({ error: error.message });
@@ -75,8 +73,22 @@ const createUser = async (req, res) => {
 //GET STAFF ONLINE
 
     const staffOnline = async (req, res) => {
-        res.status(200).json({user})
+    const { id } = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(404).json({msg: "Invalid ID"})
     }
+
+    const user = await User.findById(id)
+
+    if(!user){
+       return res.status(404).json({msg: "User not found"})
+    }
+
+    res.status(200).json(user)
+
+}
+  
 
 
 //DELETE

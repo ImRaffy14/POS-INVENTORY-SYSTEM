@@ -3,10 +3,12 @@ import { useState } from 'react'
 
 
 
+
 function Login() {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    
     
 
     const handleLogin = async (e) => {
@@ -26,10 +28,12 @@ function Login() {
 
             const json = await response.json()
 
+            
+
             if(response.ok){
                 localStorage.setItem('accessToken', json.token);
-                window.location.href="AdminPage"
-                    
+                localStorage.setItem('UiD_01', json.user._id)
+                window.location.href='AdminPage'       
             }
 
             else{
