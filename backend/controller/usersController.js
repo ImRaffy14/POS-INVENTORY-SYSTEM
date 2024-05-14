@@ -29,7 +29,7 @@ const getSingleUser = async (req, res) => {
 
 //POST
 const createUser = async (req, res) => {
-    const {email, username, password} = req.body
+    const {email, username, password, role} = req.body
 
     try {
         let hashedPassword = password; 
@@ -37,9 +37,15 @@ const createUser = async (req, res) => {
         if (password !== '') {
             hashedPassword = await bcrypt.hash(password, 10); 
         }
-        
 
-        const user = await User.create({email, username, password: hashedPassword,})
+
+        let confirmRole = role;
+
+        if(confirmRole === 'Select Role'){
+            confirmRole = '';
+        }
+
+        const user = await User.create({email, username, password: hashedPassword, role: confirmRole,})
         res.status(200).json(user)
     }
     catch(err){

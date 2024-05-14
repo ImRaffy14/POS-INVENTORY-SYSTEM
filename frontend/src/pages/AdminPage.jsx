@@ -4,6 +4,11 @@ import StaffsData from '../components/StaffsData';
 import { toast } from 'react-toastify';
 import Dashboard from '../components/Dashboard';
 import { UseOnlineStaffContext } from '../hooks/useStaffOnline';
+import Products from '../components/Products';
+import AuditTrails from '../components/AuditTrails';
+import InventoryTracker from '../components/InventoryTracker';
+import SalesReport from '../components/SalesReport';
+import TrendAnalysis from '../components/TrendAnalysis';
 
 
 function AdminPage() {
@@ -105,8 +110,8 @@ function AdminPage() {
                                     <details>
                                     <summary>INVENTORY MANAGEMENT</summary>
                                     <ul className="p-2">
-                                        <li><a>PRODUCTS</a></li>
-                                        <li><a>INVENTORY TRACKER</a></li>
+                                        <li><Link to="Products">PRODUCTS</Link></li>
+                                        <li><Link to="InventoryTracker">INVENTORY TRACKER</Link></li>
                                     </ul>
                                     </details>
                                 </li>
@@ -114,8 +119,8 @@ function AdminPage() {
                                     <details>
                                     <summary>SALES ANALYTICS</summary>
                                     <ul className="p-2">
-                                        <li><a>SALES REPORT</a></li>
-                                        <li><a>TREND ANALYSIS</a></li>
+                                        <li><Link to="SalesReport">SALES REPORT</Link></li>
+                                        <li><Link to="TrendAnalysis">TREND ANALYSIS</Link></li>
                                     </ul>
                                     </details>
                                 </li>
@@ -124,7 +129,7 @@ function AdminPage() {
                                     <summary>STAFF MANAGEMENT</summary>
                                     <ul className="p-2">
                                         <li><Link to="Staffs">STAFF ROLES AND PERMISSION</Link></li>
-                                        <li><a>AUDIT TRAILS</a></li>
+                                        <li><Link to="AuditTrails">AUDIT TRAILS</Link></li>
                                     </ul>
                                     </details>
                                 </li>
@@ -162,8 +167,13 @@ function AdminPage() {
                         </div>
                         {/* DATA */}
                         <Routes>
-                            <Route path="" element={<Dashboard/>}/>
-                            <Route path='Staffs' element={<StaffsData />} />
+                            <Route path='' element={<Dashboard/>}/>
+                            <Route path='Staffs' element={<StaffsData />}/>
+                            <Route path='Products' element={<Products/>}/>
+                            <Route path='InventoryTracker' element={<InventoryTracker/>}/>
+                            <Route path='SalesReport' element={<SalesReport/>}/>
+                            <Route path='TrendAnalysis' element={<TrendAnalysis/>}/>
+                            <Route path='AuditTrails' element={<AuditTrails/>}/>
                         </Routes>
                     </div>
                 </div>

@@ -12,7 +12,7 @@ export const UserContextProvider = ({ children }) => {
                 }
             case 'CREATE_USER':
                 return{
-                    users: [state.users, action.payload]
+                    users: [action.payload, ...state.users,]
                 }
             case 'DELETE_USER':
                 return{
