@@ -21,7 +21,13 @@ const userSchema = new Schema({
     role:{
         type: String,
         required: true
+    },
+
+    avatar:{
+        type: String,
+        required: true
     }
+    
 
 }, { timestamps: true})
 

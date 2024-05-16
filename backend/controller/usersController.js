@@ -2,6 +2,23 @@ const mongoose = require('mongoose')
 const User = require('../model/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
+const multer  = require('multer')
+
+// STORAGE ENGINE FOR AVATAR
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads')
+    },
+    filename: function (req, file, cb) {
+      
+      cb(null, `${Date.now()}${file.originalname}`)
+    }
+  })
+
+  
+const upload = multer({ storage })
+
+
 
 //GET
 const getUsers = async (req,res) => {
@@ -27,32 +44,41 @@ const getSingleUser = async (req, res) => {
 
 }
 
+
+
 //POST
 const createUser = async (req, res) => {
-    const {email, username, password, role} = req.body
-
     try {
-        let hashedPassword = password; 
+        
+        upload.single('image')(req, res, async function (err) {
+            if (err) {
+                return res.status(400).json({ error: err.message });
+            }
 
-        if (password !== '') {
-            hashedPassword = await bcrypt.hash(password, 10); 
-        }
+            const { email, username, password, role } = req.body;
+            const avatarPath = `${req.file.filename}`
+            
+            let hashedPassword = '';
 
+            if (password) {
+                hashedPassword = await bcrypt.hash(password, 10);
+            }
 
-        let confirmRole = role;
+            let confirmRole = role;
 
-        if(confirmRole === 'Select Role'){
-            confirmRole = '';
-        }
+            if (confirmRole === 'Select Role') {
+                confirmRole = '';
+            }
 
-        const user = await User.create({email, username, password: hashedPassword, role: confirmRole,})
-        res.status(200).json(user)
+            const user = await User.create({ email, username, password: hashedPassword, role: confirmRole, avatar: avatarPath });
+            res.status(200).json(user);
+        });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
     }
-    catch(err){
-        res.status(400).json({error: err.message})
-    }
-    
-}
+};
+
+
 
 
 //POST LOGIN
@@ -142,5 +168,6 @@ module.exports = {
     deleteUser,
     updateUser,
     loginUser,
-    staffOnline
+    staffOnline,
+    
 }

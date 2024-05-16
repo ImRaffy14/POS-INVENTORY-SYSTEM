@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { TiUserAdd } from "react-icons/ti";
 import { toast } from 'react-toastify'
 
-function StaffsData() {
+function StaffsData({ url }) {
 
     const {users, dispatch} = UseUsersContext()
 
@@ -53,6 +53,8 @@ function StaffsData() {
     const [passErr, setPassErr] = useState('')
     const [err, setErr] = useState(null)
     const [role, setRole] = useState('Select Role')
+    const [file, setFile] = useState(null);
+   
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -63,14 +65,19 @@ function StaffsData() {
             setConfirm('')
             return; 
         }
-        
-        const users = {email, username, password, role} 
+
+        const formData = new FormData();
+        formData.append('email', email)
+        formData.append('username', username)
+        formData.append('password', password)
+        formData.append('role', role)
+        formData.append('image', file);
 
         const response = await fetch('http://localhost:3000/api/users',{
             method: 'POST',
-            body: JSON.stringify(users),
+            body: formData,
             headers: {
-                'Content-Type': 'application/json'
+                
             }
         })
         
@@ -88,6 +95,7 @@ function StaffsData() {
             setPassErr('');
             setConfirm('')
             setRole('Select Role')
+            setFile(null)
             console.log('New User Added')
             dispatch({type: 'CREATE_USER', payload: json})
             toast.success("New Staff Added!", {
@@ -121,6 +129,7 @@ function StaffsData() {
                             <th>Username</th>
                             <th>Password</th>
                             <th>Role</th>
+                            <th>Avatar</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -133,6 +142,7 @@ function StaffsData() {
                                 <td>{users.username}</td>
                                 <td>{users.password}</td>
                                 <td>{users.role}</td>
+                                <td><img className="w-[70px]" src={`${url}images/${users.avatar}`} alt="User Avatar" /></td>
                                 <td className="text-xl text-green-500 cursor-pointer"><MdOutlineSystemUpdateAlt /></td>
                                 <td className="text-xl text-red-500 cursor-pointer" onClick={() => handleDelete(users._id)}><FaTrash /></td>    
                             </tr>
@@ -171,6 +181,8 @@ function StaffsData() {
                         <option value="STAFF">STAFF</option>
                         <option value="ADMIN">ADMIN</option>
                     </select>
+
+                    <input type="file" className="file-input w-full max-w-xs mt-4" onChange={(e) => setFile(e.target.files[0]) }/>
                 
                     <button className="btn btn-primary mt-4">Login</button>
 

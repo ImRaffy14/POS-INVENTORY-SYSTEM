@@ -20,7 +20,7 @@ app.use((req,res,next) => {
 //routes
 app.use('/api/users', userRoutes)
 app.use('/api/staffOnline', staffOnlineRoutes)
-
+app.use('/images', express.static('uploads'))
 
 //db connection
 mongoose.connect(process.env.MONGGO_URI)

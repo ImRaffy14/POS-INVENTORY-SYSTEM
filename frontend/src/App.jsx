@@ -17,8 +17,10 @@ const isAuthenticated = () => {
 };
 
 function App() {
-  return (
 
+  const endpoint = "http://localhost:3000/"
+
+  return (
     <>
       <ToastContainer position="top-left" />
       <BrowserRouter>
@@ -27,7 +29,7 @@ function App() {
           <Route path="/" element={!isAuthenticated() ? <Login /> : <Navigate to="/AdminPage/*" replace /> } />
           <Route
             path="/AdminPage/*"
-            element={isAuthenticated() ? <AdminPage />  : <Navigate to="/" replace />}
+            element={isAuthenticated() ? <AdminPage url={endpoint} />  : <Navigate to="/" replace />}
           />
         </Routes>
       </BrowserRouter>
