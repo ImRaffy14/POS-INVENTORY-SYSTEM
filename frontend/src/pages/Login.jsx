@@ -28,8 +28,6 @@ function Login() {
 
             const json = await response.json()
 
-            
-
             if(response.ok){
                 localStorage.setItem('accessToken', json.token);
                 localStorage.setItem('UiD_01', json.user._id)

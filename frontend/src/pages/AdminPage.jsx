@@ -41,7 +41,6 @@ function AdminPage({ url }) {
             if(response.ok){
                 dispatch({type: 'GET_STAFF', payload: json})
             }
-
    
         }
 
@@ -106,39 +105,39 @@ function AdminPage({ url }) {
                     <div className="flex flex-col justify-center my-4">
                         <ul className="menu menu-vertical px-1">
                             <li><Link to="">DASHBOARD</Link></li>
-                                <li>
-                                    <details>
-                                    <summary>INVENTORY MANAGEMENT</summary>
-                                    <ul className="p-2">
-                                        <li><Link to="Products">PRODUCTS</Link></li>
-                                        <li><Link to="InventoryTracker">INVENTORY TRACKER</Link></li>
-                                    </ul>
-                                    </details>
-                                </li>
-                                <li>
-                                    <details>
-                                    <summary>SALES ANALYTICS</summary>
-                                    <ul className="p-2">
-                                        <li><Link to="SalesReport">SALES REPORT</Link></li>
-                                        <li><Link to="TrendAnalysis">TREND ANALYSIS</Link></li>
-                                    </ul>
-                                    </details>
-                                </li>
-                                <li>
-                                    <details>
-                                    <summary>STAFF MANAGEMENT</summary>
-                                    <ul className="p-2">
-                                        <li><Link to="Staffs">STAFF ROLES AND PERMISSION</Link></li>
-                                        <li><Link to="AuditTrails">AUDIT TRAILS</Link></li>
-                                    </ul>
-                                    </details>
-                                </li>
+                            <li>
+                                <details>
+                                <summary>INVENTORY MANAGEMENT</summary>
+                                <ul className="p-2">
+                                    <li><Link to="Products">PRODUCTS</Link></li>
+                                    <li><Link to="InventoryTracker">INVENTORY TRACKER</Link></li>
+                                </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                <summary>SALES ANALYTICS</summary>
+                                <ul className="p-2">
+                                    <li><Link to="SalesReport">SALES REPORT</Link></li>
+                                    <li><Link to="TrendAnalysis">TREND ANALYSIS</Link></li>
+                                </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                <summary>STAFF MANAGEMENT</summary>
+                                <ul className="p-2">
+                                    <li><Link to="Staffs">STAFF ROLES AND PERMISSION</Link></li>
+                                    <li><Link to="AuditTrails">AUDIT TRAILS</Link></li>
+                                </ul>
+                                </details>
+                            </li>
                         </ul>
                     </div>
                 </div>
 
                 {/* Main content */}
-                <div className={`flex-grow transition-all duration-300 bg-gray-200 ${isToggled ? 'w-6/12 lg:w-2/12 md:w-8/12 sm:w-8/12' : 'w-full'}`}>
+                <div className={`flex-grow transition-all duration-300 bg-gray-200 ${isToggled ? 'w-6/12 lg:w-2/12 md:w-8/12 sm:w-8/12' : 'w-full'} overflow-auto`}>
                     <div className="mx-2 my-1">
                         {/* NAVBAR */}
                         <div className="navbar bg-base-100 rounded-xl">
@@ -151,7 +150,7 @@ function AdminPage({ url }) {
                                 <a className="btn btn-ghost text-xl">daisyUI</a>
                             </div>
                             <div className="navbar-end">
-                                <div className={`dropdown dropdown-end  ${isToggled ? 'hidden' : 'block'}`}>
+                                <div className={`dropdown dropdown-end `}>
                                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                         <div className="w-10 rounded-full">
                                             {staffOnline && <img className="w-full h-full object-cover" alt="Tailwind CSS Navbar component" src={`${url}images/${staffOnline.avatar}`} />}

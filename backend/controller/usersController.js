@@ -3,6 +3,8 @@ const User = require('../model/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const multer  = require('multer')
+const fs = require('fs');
+const path = require('path');
 
 // STORAGE ENGINE FOR AVATAR
 const storage = multer.diskStorage({
@@ -57,6 +59,7 @@ const createUser = async (req, res) => {
 
             const { email, username, password, role } = req.body;
             const avatarPath = `${req.file.filename}`
+            console.log(req.file.filename)
             
             let hashedPassword = '';
 
@@ -64,13 +67,11 @@ const createUser = async (req, res) => {
                 hashedPassword = await bcrypt.hash(password, 10);
             }
 
-            let confirmRole = role;
-
-            if (confirmRole === 'Select Role') {
-                confirmRole = '';
+            if (role === 'Select Role') {
+                return res.status(401).json({msg: 'PATH ROLE IS REQUIRED!'})
             }
 
-            const user = await User.create({ email, username, password: hashedPassword, role: confirmRole, avatar: avatarPath });
+            const user = await User.create({ email, username, password: hashedPassword, role, avatar: avatarPath });
             res.status(200).json(user);
         });
     } catch (err) {
@@ -127,20 +128,33 @@ const createUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     const { id } = req.params
 
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({msg: "Invalid ID"})
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ msg: "Invalid ID" })
     }
 
-    const user = await User.findOneAndDelete({_id: id},{
-        ...req.body
-    })
+    try {
+        const user = await User.findById(id)
 
-    if(!user){
-      return  res.status(404).json({msg: 'User not found'})
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' })
+        }
+
+        // Delete the file asynchronously
+        fs.unlink(path.join(__dirname, '../uploads', user.avatar), async (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+            }
+
+            // Continue with user deletion regardless of file deletion success or failure
+            const deletedUser = await User.findOneAndDelete({ _id: id })
+            res.status(200).json(deletedUser)
+        });
+    } catch (error) {
+        console.error('Error deleting user:', error)
+        return res.status(500).json({ msg: 'Internal Server Error' })
     }
-
-    res.status(200).json(user)   
 }
+
 
 //PATCH
 const updateUser = async (req, res) => {
