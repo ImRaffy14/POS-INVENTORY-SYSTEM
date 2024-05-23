@@ -54,10 +54,9 @@ function StaffsData({ url }) {
     const [confirm, setConfirm] = useState('')
     const [passErr, setPassErr] = useState('')
     const [err, setErr] = useState(null)
-    const [role, setRole] = useState('Select Role')
+    const [role, setRole] = useState('STAFF')
     const [file, setFile] = useState(null);
-    console.log(file)
-   
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -98,7 +97,7 @@ function StaffsData({ url }) {
             setPassword('')
             setPassErr('');
             setConfirm('')
-            setRole('Select Role')
+            setRole('STAFF')
             console.log('New User Added')
             dispatch({type: 'CREATE_USER', payload: json})
             toast.success("New Staff Added!", {
@@ -179,18 +178,21 @@ function StaffsData({ url }) {
                     <input type="password" className="grow" placeholder="Confirm Password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required />
                     </label>
 
-                    <select className="select select-bordered w-full max-w-xs mt-4" onChange={(e) => setRole(e.target.value)} > 
-                        <option value="Select Role">Select Role</option>
-                        <option value="STAFF">STAFF</option>
-                        <option value="ADMIN">ADMIN</option>
-                    </select>
+                    <p className="mt-4 text-lg">Set Role</p>
+                    <div className="flex">
+                    <input type="radio" name="radio-1" className="radio" value="STAFF" checked={role === 'STAFF'} onChange={(e) => setRole(e.target.value)} /> <p className="ml-2">STAFF</p>
+                    </div>
+            
+                    <div className="flex">
+                    <input type="radio" name="radio-1" className="radio" value="ADMIN" checked={role === 'ADMIN'} onChange={(e) => setRole(e.target.value)} /> <p className="ml-2">ADMIN</p>
+                    </div>
 
                     <input type="file" className="file-input w-full max-w-xs mt-4" onChange={(e) => setFile(e.target.files[0]) } required />
-                
-                    <button className="btn btn-primary mt-4">Login</button>
+                    
+                    {err && <div className="mt-4">{err}</div>}
+                    {passErr && <div className="text-red-500 mt-4">{passErr}</div>}
 
-                    {err && <div>{err}</div>}
-                    {passErr && <div>{passErr}</div>}
+                    <button className="btn btn-primary mt-4">Login</button>
                     
                 </form>
             </div>

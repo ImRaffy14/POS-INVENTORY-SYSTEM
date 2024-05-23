@@ -8,6 +8,7 @@ function Login() {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [err, setErr] = useState('')
     
     
 
@@ -31,11 +32,14 @@ function Login() {
             if(response.ok){
                 localStorage.setItem('accessToken', json.token);
                 localStorage.setItem('UiD_01', json.user._id)
+                setErr('')
                 window.location.href='AdminPage'       
             }
 
             else{
-                console.log(json.error)
+                setErr(json.error)
+                setPassword('')
+                setUsername('')
             }
         }
         catch(error){
@@ -67,6 +71,7 @@ function Login() {
                 <label className="label">
                     <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                 </label>
+                { err && <p className="text-red-500">{err}</p> }
                 </div>
                 <div className="form-control mt-6">
                 <button className="btn btn-primary">Login</button>
