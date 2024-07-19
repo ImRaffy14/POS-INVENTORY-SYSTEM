@@ -9,6 +9,7 @@ import AuditTrails from '../components/AuditTrails';
 import InventoryTracker from '../components/InventoryTracker';
 import SalesReport from '../components/SalesReport';
 import TrendAnalysis from '../components/TrendAnalysis';
+import Settings from '../components/Settings';
 
 
 function AdminPage({ url }) {
@@ -147,7 +148,7 @@ function AdminPage({ url }) {
                                 </button>
                             </div>
                             <div className="navbar-center">
-                                <a className="btn btn-ghost text-xl">daisyUI</a>
+                                <a className="btn btn-ghost text-xl">POS INVENTORY</a>
                             </div>
                             <div className="navbar-end">
                                 <div className={`dropdown dropdown-end `}>
@@ -158,7 +159,7 @@ function AdminPage({ url }) {
                                     </div>
                                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                                         <h1 className="ml-3 mb-1">{staffOnline && staffOnline.username}<span className="badge text-teal-500 ml-2">online</span></h1>
-                                        <li><a>Settings</a></li>
+                                        <li><Link to="Settings">Settings</Link></li>
                                         <li onClick={handleLogout}><a>Logout</a></li>
                                     </ul>
                                 </div>
@@ -173,6 +174,7 @@ function AdminPage({ url }) {
                             <Route path='SalesReport' element={<SalesReport/>}/>
                             <Route path='TrendAnalysis' element={<TrendAnalysis/>}/>
                             <Route path='AuditTrails' element={<AuditTrails/>}/>
+                            <Route path="Settings" element={<Settings/>} data={staffOnline}/>
                         </Routes>
                     </div>
                 </div>

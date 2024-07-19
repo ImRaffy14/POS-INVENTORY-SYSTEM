@@ -10,6 +10,9 @@ import { toast } from 'react-toastify'
 function StaffsData({ url }) {
 
     const {users, dispatch} = UseUsersContext()
+    const [userId, setUserId] = useState('')
+
+    console.log(userId)
 
     useEffect(()=>{
         const usersList = async () => {
@@ -35,13 +38,13 @@ function StaffsData({ url }) {
         const json = await response.json()
  
         if(response.ok){
-             dispatch({type: 'DELETE_USER', payload: json})
-             toast.success("Staff Removed!", {
-                position: "top-right"
-              });
+            dispatch({type: 'DELETE_USER', payload: json})
+            toast.success("Staff Removed!", {
+            position: "top-right"
+            });
 
-              fetchFiles();
-
+            fetchFiles();
+            setUserId('');
         }
      }
 
@@ -108,8 +111,14 @@ function StaffsData({ url }) {
         }    
     }
 
+    // handles modal for Create Staff
     const handleStaffModal = () => {
         document.getElementById('CreateStaff').close()
+    }
+
+    // handles modal for Confirm Delete
+    const confirmDelete = () => {
+        document.getElementById('confirmDelete').showModal()
     }
 
 
@@ -146,7 +155,7 @@ function StaffsData({ url }) {
                                 <td>{users.role}</td>
                                 <td><img className="w-[70px]" src={`${url}images/${users.avatar}`} alt="User Avatar" /></td>
                                 <td className="text-xl text-green-500 cursor-pointer"><MdOutlineSystemUpdateAlt /></td>
-                                <td className="text-xl text-red-500 cursor-pointer" onClick={() => handleDelete(users._id)}><FaTrash /></td>    
+                                <td className="text-xl text-red-500 cursor-pointer" onClick={() => {setUserId(users._id) ; confirmDelete()}}><FaTrash /></td>    
                             </tr>
                             </tbody>
                         )}
@@ -199,6 +208,22 @@ function StaffsData({ url }) {
             <form method="dialog" className="modal-backdrop">
                 <button>close</button>
             </form>
+        </dialog>
+
+        {/* Modal for Delete Confirmation */}
+
+        <dialog id="confirmDelete" className="modal">
+            <div className="modal-box">
+                <h3 className="font-bold text-lg">Confirmation</h3>
+                <p className="py-4">Are you sure you want to remove this staff?</p>
+                <div className="modal-action">
+                <form method="dialog">
+                    {/* if there is a button in form, it will close the modal */}
+                    <button className="btn mr-2" onClick={() => handleDelete(userId)}>Yes</button>
+                    <button className="btn">No</button>
+                </form>
+                </div>
+            </div>
         </dialog>
     </>
   )

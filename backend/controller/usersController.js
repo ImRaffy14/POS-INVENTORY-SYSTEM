@@ -20,6 +20,14 @@ const storage = multer.diskStorage({
   
 const upload = multer({ storage })
 
+//Current Date
+function getCurrentDateTime() {
+    const now = new Date();
+    const date = now.toLocaleDateString();
+    const time = now.toLocaleTimeString();
+    return `${date} ${time}`;
+}
+
 
 
 //GET
@@ -93,8 +101,9 @@ const createUser = async (req, res) => {
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 return res.status(401).json({ error: 'Invalid credentials' });
             }
-
+            
             const token = jwt.sign({ userId: User._id }, 'secret_key', { expiresIn: '1h' });
+            console.log(`[${getCurrentDateTime()}] ${ username } LOGGED IN.`)
             res.status(200).json({token, user});
 
         } catch (error) {

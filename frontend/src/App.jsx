@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import CreateUser from './pages/CreateUser';
 import AdminPage from './pages/AdminPage';
 import Login from './pages/Login';
+import PageNotFound from './components/PageNotFound';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
@@ -31,6 +32,7 @@ function App() {
             path="/AdminPage/*"
             element={isAuthenticated() ? <AdminPage url={endpoint} />  : <Navigate to="/" replace />}
           />
+          <Route path="*" element={<PageNotFound/>}/>
         </Routes>
       </BrowserRouter>
     </>
